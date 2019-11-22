@@ -1,10 +1,10 @@
 #!/bin/bash
 name="$1"
 max="$2"
+echo "#undef $name"
 echo "#if 0"
 for i in $(seq 0 $max); do
     echo "#elif ${name}_NEXT == $i"
-    echo "#   undef $name"
     echo "#   define $name $i"
 done
 echo "#else"

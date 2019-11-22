@@ -1,9 +1,9 @@
 CC = gcc
 
-MAX_LITERAL = 65535
+MAX_LITERAL = 255
 
-VARIABLES = __I __F0 __F1 __TMP R
-TARGETS = $(VARIABLES:%=literal_%.h)
+VARIABLES = B0 B1 B2 B3 B4 B5 B6 B7 B8 B9 B10 B11 B12 B13 B14 B15 N0 N1 N2 N3 N4 N5 N6 N7 N8 N9 N10 N11 N12 N13 N14 N15 K0 K1 K2 K3 K4 K5 K6 K7 K8 K9 K10 K11 K12 K13 K14 K15
+TARGETS = $(VARIABLES:%=literals/%.h) literals/sbox.h sub_bytes.h add_round_key.h transform_block.h transform_key.h
 
 .PHONY: build
 build: $(TARGETS)
@@ -14,15 +14,27 @@ clean:
 
 .PHONY: run
 run: main.h build
-ifeq ($(N),)
-	@echo "ERROR: no input number specified"
-	@echo "usage: make $@ N=<number>"
-	@exit 1
-endif
-	$(CC) -E $< -DN=$(N) | grep -vE '#|^$$'
+	$(CC) -E $< | grep -vE '#|^$$'
+
+literals/sbox.h: gen_sbox.sh
+	mkdir -p literals/
+	./$^ > $@
+
+sub_bytes.h: gen_sub_bytes.sh
+	./$^ > $@
+
+add_round_key.h: gen_add_round_key.sh
+	./$^ > $@
+
+transform_block.h: gen_transform.sh
+	./$^ B > $@
+
+transform_key.h: gen_transform.sh
+	./$^ K > $@
 
 define LITERAL_template =
-literal_$(1).h: gen_literal.sh
+literals/$(1).h: gen_literal.sh
+	mkdir -p literals/
 	./$$^ $(1) $(MAX_LITERAL) > $$@
 endef
 
