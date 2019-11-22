@@ -4,7 +4,7 @@ max="$2"
 echo "#undef $name"
 echo "#if 0"
 for i in $(seq 0 $max); do
-    echo "#elif ${name}_NEXT == $i"
+    echo "#elif (${name}_NEXT) == $i"
     echo "#   define $name $i"
 done
 echo "#else"
