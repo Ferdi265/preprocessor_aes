@@ -19,10 +19,10 @@ sbox=(
  140  161  137   13  191  230   66  104   65  153   45   15  176   84  187   22
 )
 
-echo "#undef SBOX"
 echo "#if 0"
 for i in {0..255}; do
     echo "#elif (SBOX_NEXT) == $i"
+    echo "#   undef SBOX"
     echo "#   define SBOX ${sbox[$i]}"
 done
 echo "#else"
