@@ -1,3 +1,4 @@
+// from https://github.com/kokke/tiny-AES-c/blob/ca85e00de963102d3999ea5fa865c0deff6370d3/aes.c#L306
 #define X(x) ((((x) << 1) ^ ((((x) >> 7) & 1) * 27)) & 255)
 #define C0T0 B0
 #define C0T1 (B0 ^ B1 ^ B2 ^ B3)
